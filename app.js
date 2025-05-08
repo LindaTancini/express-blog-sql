@@ -2,6 +2,8 @@
 const express = require("express");
 // CREO APP INVOCANDO EXPRESS
 const app = express();
+// IMPORTO E AVVIO LA CONNESSIONE AL DB
+const db = require("./data/db");
 // DEFINISCO LA PORTA
 const port = 3000;
 // REGISTRO IL BODY-PARSER
