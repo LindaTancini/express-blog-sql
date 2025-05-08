@@ -30,8 +30,22 @@ function destroy(req, res) {
   });
 }
 
-//OTTENGO UN POST CERCANDO IL SUO ID, CREO FUNZIONE SHOW
-function show(req, res) {}
+//  SHOW
+function show(req, res) {
+  const id = req.params.id;
+  // QUERY
+  const sql = "SELECT * FROM posts WHERE id = ?";
+  // ESEGUO LA QUERY
+  connection.query(sql, [id], (err, results) => {
+    if (err)
+      return res.status(500).json({ error: "Ahia! La query al db è fallita" });
+    if (results.length === 0)
+      return res
+        .status(404)
+        .json({ error: "Ahia! Il post non è stato trovato" });
+    res.json(results[0]);
+  });
+}
 
 // ESPORTO LE FUNZIONI
 module.exports = { index, show, destroy };
