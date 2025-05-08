@@ -1,9 +1,19 @@
-// IMPORTO L'ARRAY CON I POSTS
-const posts = require("../data/posts.js");
-const postsArray = require("../data/posts.js");
+// CONNETTO IL DB
+const connection = require("../data/db");
 
-// OTTENGO TUTTI I POST, CREO FUNZIONE INDEX
-function index(req, res) {}
+//  INDEX
+function index(req, res) {
+  // QUERY
+  const sql = `SELECT * from posts`;
+  //CONTROLLO SE FUNZIONA L'ERRORE
+  //const sql = `SELECT * from postsssssss`;
+  //ESEGUO LA QUERY
+  connection.query(sql, (err, results) => {
+    if (err)
+      return res.status(500).json({ error: "Ahia! La query al db è fallita" });
+    res.json(results);
+  });
+}
 
 //OTTENGO UN POST CERCANDO IL SUO ID, CREO FUNZIONE SHOW
 function show(req, res) {}
