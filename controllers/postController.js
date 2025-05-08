@@ -15,11 +15,23 @@ function index(req, res) {
   });
 }
 
+//  DESTROY
+function destroy(req, res) {
+  // QUERY
+  const { id } = req.params;
+  const sql = `DELETE FROM posts WHERE id = ?`;
+  // ESEGUO LA QUERY
+  connection.query(sql, [id], (err) => {
+    if (err)
+      return res
+        .status(500)
+        .json({ error: "Ahia! Hai fallito ad eliminare il post" });
+    res.sendStatus(204);
+  });
+}
+
 //OTTENGO UN POST CERCANDO IL SUO ID, CREO FUNZIONE SHOW
 function show(req, res) {}
-
-//  ELIMINO UN POST CERCANDO IL SUO ID, CREO FUNZIONE DESTROY
-function destroy(req, res) {}
 
 // ESPORTO LE FUNZIONI
 module.exports = { index, show, destroy };
