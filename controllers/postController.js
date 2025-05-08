@@ -33,8 +33,14 @@ function destroy(req, res) {
 //  SHOW
 function show(req, res) {
   const id = req.params.id;
-  // QUERY
+  // QUERY POST
   const sql = "SELECT * FROM posts WHERE id = ?";
+  // QUERY TAG
+  const sqlTag = `SELECT *
+  FROM
+      tags
+  JOIN post_tag ON tags.id = post_tag.tag_id
+  WHERE post_tag.post_id = ?`;
   // ESEGUO LA QUERY
   connection.query(sql, [id], (err, results) => {
     if (err)
@@ -43,7 +49,17 @@ function show(req, res) {
       return res
         .status(404)
         .json({ error: "Ahia! Il post non è stato trovato" });
-    res.json(results[0]);
+    //RECUPERIAMO IL TAG
+    const post = results[0];
+    //ESEGUO QUERY TAG
+    connection.query(sqlTag, [id], (err, tagResults) => {
+      if (err)
+        return res
+          .status(500)
+          .json({ error: "Ahia! La query al db è fallita" });
+      post.tags = tagResults;
+      res.json(post);
+    });
   });
 }
 
